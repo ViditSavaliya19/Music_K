@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "189045074006",
+    "firebase_url": "https://musicappkaival-default-rtdb.firebaseio.com",
+    "project_id": "musicappkaival",
+    "storage_bucket": "musicappkaival.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189045074006:android:d5d69f63ecd5304fa5f3f7",
+        "android_client_info": {
+          "package_name": "com.kaival.music"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "189045074006-so9d16d5so5663s7pi3qc2u53ng06ief.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUy349dZXvu7QvQlbQOPlufrEtb678er8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "189045074006-so9d16d5so5663s7pi3qc2u53ng06ief.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
