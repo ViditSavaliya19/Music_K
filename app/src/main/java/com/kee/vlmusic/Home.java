@@ -60,6 +60,13 @@ public class Home extends AppCompatActivity {
                     fragmentTransaction1.replace(R.id.contact, fragment1);
                     fragmentTransaction1.commit();
                     return true;
+
+                case R.id.nav_users:
+                    CategoryFragment fragment2 = new CategoryFragment();
+                    FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction2.replace(R.id.contact, fragment2);
+                    fragmentTransaction2.commit();
+                    return true;
             }
             return false;
         }
