@@ -9,10 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.jean.jcplayer.model.JcAudio;
+import com.kee.vlmusic.Model.Example;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.cardview.widget.CardView;
@@ -22,6 +25,8 @@ public class ListAdapter extends BaseAdapter {
     List<String> thumbnails;
     List<String> songArtist;
     List<String> songDuration;
+    List<Example> musicList;
+
     Context context;
     public ListAdapter(Context context, List<String> songNames, List<String> thumbnails, List<String> songArtist, List<String> songDuration) {
         this.context = context;
@@ -31,9 +36,14 @@ public class ListAdapter extends BaseAdapter {
         this.songDuration = songDuration;
     }
 
+    public ListAdapter(Context applicationContext, List<Example> musicList) {
+        this.context=applicationContext;
+        this.musicList=musicList;
+    }
+
     @Override
     public int getCount() {
-        return songNames.size();
+        return musicList.size();
     }
 
     @Override
@@ -63,9 +73,10 @@ public class ListAdapter extends BaseAdapter {
                 .build();
 
 //        Picasso.get().load(thumbnails.get(i)).transform(transformation).into(viewHolder.thumbnail);
-        viewHolder.songName.setText(songNames.get(i));
-        viewHolder.artistName.setText(songArtist.get(i));
-        viewHolder.songDuration.setText(songDuration.get(i));
+        viewHolder.songName.setText(musicList.get(i).getsName());
+        viewHolder.artistName.setText(musicList.get(i).getaName());
+        viewHolder.songDuration.setText("5:00");
+
         return view;
     }
 

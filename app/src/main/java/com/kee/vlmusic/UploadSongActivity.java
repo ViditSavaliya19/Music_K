@@ -50,6 +50,7 @@ public class UploadSongActivity extends AppCompatActivity {
     ImageView selectImage;
     Button uploadButton;
     ImageButton selectSong;
+    private EditText song_duration,songlink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,8 @@ public class UploadSongActivity extends AppCompatActivity {
         selectImage = findViewById(R.id.selectImage);
         uploadButton = findViewById(R.id.uploadSongButton);
         artistName = findViewById(R.id.artistNameEditText);
+        songlink=findViewById(R.id.songlink);
+        song_duration=findViewById(R.id.song_duration);
         selectSong = findViewById(R.id.selectSongButton);
 
         selectSong.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +127,7 @@ public class UploadSongActivity extends AppCompatActivity {
     }
 
     public void upload(View view){
-        if (uriSong == null){
+        if (songlink.getText().toString().equals("")){
             Toast.makeText(this, "Please select a song", Toast.LENGTH_SHORT).show();
         }
         else if (selectSongNameEditText.getText().toString().equals("")){
@@ -133,16 +136,20 @@ public class UploadSongActivity extends AppCompatActivity {
         else if(artistName.getText().toString().equals("")){
             Toast.makeText(this, "Please add Artist, album name", Toast.LENGTH_SHORT).show();
         }
-        else if (image == null){
+        else if (song_duration.getText().toString().equals("")){
             Toast.makeText(this, "Please select a Thumbnail", Toast.LENGTH_SHORT).show();
         }
         else {
             fileName = selectSongNameEditText.getText().toString();
             String artist = artistName.getText().toString();
+            String duration = song_duration.getText().toString();
+            String link= songlink.getText().toString();
 
-//            uploadDetailsToDatabase("fileName","songUrl","imageUrl",artist,"duration");
-            uploadImageToServer(bytes,fileName);
-            uploadFileToServer(uriSong,fileName,artist,songLength);
+
+
+            uploadDetailsToDatabase(fileName,link,"https://satkaival.in/data/Photo-Gallery/Paramguru-image/44.jpg",artist,duration);
+//            uploadImageToServer(bytes,fileName);
+//            uploadFileToServer(uriSong,fileName,artist,songLength);
         }
     }
 
@@ -211,7 +218,6 @@ public class UploadSongActivity extends AppCompatActivity {
                 Log.i("database", "upload success");
                 progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "Song Uploaded to Database", Toast.LENGTH_SHORT).show();
-                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -219,7 +225,6 @@ public class UploadSongActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     // METHOD TO GET THE SONG NAME

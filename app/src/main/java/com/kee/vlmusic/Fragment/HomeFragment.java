@@ -1,9 +1,14 @@
 package com.kee.vlmusic.Fragment;
 import static com.kee.vlmusic.Home.jcPlayerView;
+import static com.kee.vlmusic.Utils.Api.jcAudios;
+import static com.kee.vlmusic.Utils.Api.musicList;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.kee.vlmusic.ListAdapter;
 import com.kee.vlmusic.R;
 import com.kee.vlmusic.Song;
+import com.kee.vlmusic.Utils.Api;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +40,8 @@ public class HomeFragment extends Fragment {
     List<String> songsDurationList;
     ListAdapter adapter;
 //    JcPlayerView jcPlayerView;
-    List<JcAudio> jcAudios;
+
+
     List<String> thumbnail;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +67,6 @@ public class HomeFragment extends Fragment {
         songsUrlList = new ArrayList<>();
         songsArtistList = new ArrayList<>();
         songsDurationList = new ArrayList<>();
-        jcAudios = new ArrayList<>();
         thumbnail = new ArrayList<>();
 //        jcPlayerView = view.findViewById(R.id.jcplayer);
         retrieveSongs();
@@ -67,6 +74,8 @@ public class HomeFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getActivity(), ""+jcAudios.get(i), Toast.LENGTH_SHORT).show();
+                Log.e("Tag Click",""+jcAudios.get(i));
                 jcPlayerView.playAudio(jcAudios.get(i));
                 jcPlayerView.setVisibility(View.VISIBLE);
                 jcPlayerView.createNotification();
@@ -76,31 +85,44 @@ public class HomeFragment extends Fragment {
     }
 
     public void retrieveSongs() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Songs");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Song song = ds.getValue(Song.class);
-                    songsNameList.add(song.getSongName());
-                    songsUrlList.add(song.getSongUrl());
-                    songsArtistList.add(song.getSongArtist());
-                    songsDurationList.add(song.getSongDuration());
-                    thumbnail.add(song.getImageUrl());
 
-                    jcAudios.add(JcAudio.createFromURL(song.getSongName(), song.getSongUrl()));
-                }
-                adapter = new ListAdapter(getActivity().getApplicationContext(), songsNameList, thumbnail, songsArtistList, songsDurationList);
-                jcPlayerView.initPlaylist(jcAudios, null);
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                progressDialog.dismiss();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "FAILED!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Api api=new Api(getActivity());
+        api.Music();
+
+        rv();
+//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Songs");
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for (DataSnapshot ds : snapshot.getChildren()) {
+//                    Song song = ds.getValue(Song.class);
+//                    songsNameList.add(song.getSongName());
+//                    songsUrlList.add(song.getSongUrl());
+//                    songsArtistList.add(song.getSongArtist());
+//                    songsDurationList.add(song.getSongDuration());
+//                    thumbnail.add(song.getImageUrl());
+//
+//                    jcAudios.add(JcAudio.createFromURL(song.getSongName(), song.getSongUrl()));
+//                }
+//                adapter = new ListAdapter(getActivity().getApplicationContext(), songsNameList, thumbnail, songsArtistList, songsDurationList);
+////                jcPlayerView.initPlaylist(jcAudios, null);
+////                listView.setAdapter(adapter);
+////                adapter.notifyDataSetChanged();
+////                progressDialog.dismiss();
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(getActivity(), "FAILED!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+    }
+
+    public void rv() {
+        Toast.makeText(getActivity(), ""+musicList.size(), Toast.LENGTH_SHORT).show();
+        adapter = new ListAdapter(getActivity().getApplicationContext(), musicList);
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        progressDialog.dismiss();
     }
 
 }
